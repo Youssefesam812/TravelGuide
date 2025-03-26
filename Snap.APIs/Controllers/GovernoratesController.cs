@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Snap.Repository.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
-using System.Text.Json;
+using Snap.APIs.DTOs;
 
 
 namespace Snap.APIs.Controllers
@@ -19,19 +18,28 @@ namespace Snap.APIs.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Governorate>>> GetGovernorates()
+        public async Task<ActionResult<IEnumerable<GovernorateDto>>> GetGovernorates()
         {
-            var governorates = await _context.Governorates.Include(g => g.TopPlaces).ToListAsync();
+            var governorates = await _context.Governorates
+                .Include(g => g.TopPlaces)
+                .Select(g => new GovernorateDto
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                    ImageUrl = g.ImageUrl,
+                    Description = g.Description,
+                    TopPlaces = g.TopPlaces.Select(tp => new TopPlaceDto
+                    {
+                        Id = tp.Id,
+                        Name = tp.Name,
+                        ImageUrl = tp.ImageUrl
+                    }).ToList()
+                })
+                .ToListAsync();
 
-            var options = new JsonSerializerOptions
-            {
-                ReferenceHandler = ReferenceHandler.Preserve,
-                WriteIndented = true
-            };
-
-            var jsonString = JsonSerializer.Serialize(governorates, options);
-            return Content(jsonString, "application/json");
+            return Ok(governorates);
         }
+
 
 
         [HttpGet("{id}")]
