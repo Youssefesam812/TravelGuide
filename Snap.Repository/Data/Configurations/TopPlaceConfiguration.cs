@@ -15,8 +15,7 @@ public class TopPlaceConfiguration : IEntityTypeConfiguration<TopPlace>
         builder.Property(tp => tp.ImageUrl)
             .HasMaxLength(500);
 
-        builder.Property(tp => tp.Description)
-            .HasColumnType("TEXT");
+       
 
         // Foreign Key Relationship
         builder.HasOne(tp => tp.Governorate)

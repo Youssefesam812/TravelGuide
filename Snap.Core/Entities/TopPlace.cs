@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 public class TopPlace
 {
@@ -12,11 +13,10 @@ public class TopPlace
 
     public string ImageUrl { get; set; }
 
-    public string Description { get; set; }
-
     // Foreign key to Governorate
     [ForeignKey("Governorate")]
     public int GovernorateId { get; set; }
 
+    [JsonIgnore]
     public Governorate Governorate { get; set; }
 }

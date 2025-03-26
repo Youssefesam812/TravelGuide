@@ -10,6 +10,7 @@ using Snap.APIs.Middlewares;
 using Snap.Core.Entities;
 using Snap.Repository.Data;
 using Snap.Repository.Seeders;
+using System.Text.Json.Serialization;
 
 namespace Snap.APIs
 {
@@ -20,7 +21,10 @@ namespace Snap.APIs
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            });
 
             // Configure DbContext
             builder.Services.AddDbContext<SnapDbContext>(options =>

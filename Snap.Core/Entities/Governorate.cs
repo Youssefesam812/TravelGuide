@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 public class Governorate
 {
@@ -15,5 +16,7 @@ public class Governorate
     public string Description { get; set; }
 
     // Navigation property: One Governorate has many TopPlaces
+
+    [JsonIgnore]
     public List<TopPlace> TopPlaces { get; set; } = new List<TopPlace>();
 }
