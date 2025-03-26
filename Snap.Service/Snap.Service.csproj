@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Snap.Core\Snap.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Token\" />
+  </ItemGroup>
+
 </Project>

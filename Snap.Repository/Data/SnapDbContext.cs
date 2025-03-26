@@ -31,6 +31,8 @@ namespace Snap.Repository.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Governorate> Governorates { get; set; }
         public DbSet<TopPlace> TopPlaces { get; set; }
+        public DbSet<Blogs> Blogs { get; set; }
+
 
 
 

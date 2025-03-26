@@ -22,5 +22,17 @@ namespace Snap.APIs.Controllers
             var governorates = await _context.Governorates.Include(g => g.TopPlaces).ToListAsync();
             return Ok(governorates);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Governorate>> GetGovernorateById(int id)
+        {
+            var governorate = await _context.Governorates.Include(g => g.TopPlaces)
+                                                           .FirstOrDefaultAsync(g => g.Id == id);
+            if (governorate == null)
+            {
+                return NotFound();
+            }
+            return Ok(governorate);
+        }
     }
 }
