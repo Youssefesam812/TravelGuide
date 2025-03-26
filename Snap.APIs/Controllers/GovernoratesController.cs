@@ -43,15 +43,33 @@ namespace Snap.APIs.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Governorate>> GetGovernorateById(int id)
+        public async Task<ActionResult<GovernorateDto>> GetGovernorateById(int id)
         {
-            var governorate = await _context.Governorates.Include(g => g.TopPlaces)
-                                                           .FirstOrDefaultAsync(g => g.Id == id);
+            var governorate = await _context.Governorates
+                .Include(g => g.TopPlaces)
+                .Where(g => g.Id == id)
+                .Select(g => new GovernorateDto
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                    ImageUrl = g.ImageUrl,
+                    Description = g.Description,
+                    TopPlaces = g.TopPlaces.Select(tp => new TopPlaceDto
+                    {
+                        Id = tp.Id,
+                        Name = tp.Name,
+                        ImageUrl = tp.ImageUrl
+                    }).ToList()
+                })
+                .FirstOrDefaultAsync();
+
             if (governorate == null)
             {
                 return NotFound();
             }
+
             return Ok(governorate);
         }
+
     }
 }
