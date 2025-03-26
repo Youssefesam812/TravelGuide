@@ -12,8 +12,8 @@ using Snap.Repository.Data;
 namespace Snap.Repository.Migrations
 {
     [DbContext(typeof(SnapDbContext))]
-    [Migration("20250326003410_blogs")]
-    partial class blogs
+    [Migration("20250326023124_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -285,10 +285,6 @@ namespace Snap.Repository.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("GovernorateId")
                         .HasColumnType("int");

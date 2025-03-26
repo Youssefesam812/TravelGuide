@@ -12,8 +12,8 @@ using Snap.Repository.Data;
 namespace Snap.Repository.Migrations
 {
     [DbContext(typeof(SnapDbContext))]
-    [Migration("20250326021855_governorate modify")]
-    partial class governoratemodify
+    [Migration("20250326023825_initial2")]
+    partial class initial2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

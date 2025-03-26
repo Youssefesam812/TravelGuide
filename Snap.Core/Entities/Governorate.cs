@@ -18,5 +18,5 @@ public class Governorate
     // Navigation property: One Governorate has many TopPlaces
 
     [JsonIgnore]
-    public List<TopPlace> TopPlaces { get; set; } = new List<TopPlace>();
+    public ICollection<TopPlace> TopPlaces { get; set; } = new List<TopPlace>();
 }
