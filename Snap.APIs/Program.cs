@@ -47,6 +47,20 @@ namespace Snap.APIs
             var ValidationErrorResponse = new ApiValidationErrorResponse() 
              { Erorrs = errors};
                 return new BadRequestObjectResult(ValidationErrorResponse);};});
+
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin()
+                              .AllowAnyHeader()
+                              .AllowAnyMethod();
+                    });
+            });
+
+
             var app = builder.Build();
 
             #region Apply Migrations and Seed Data
@@ -86,6 +100,8 @@ namespace Snap.APIs
                 app.UseSwagger();
                 app.UseSwaggerUI();
             //}
+
+            app.UseCors("AllowFrontend"); // Or "AllowAll"
 
             app.UseHttpsRedirection();
 
