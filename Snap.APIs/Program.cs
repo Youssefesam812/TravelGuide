@@ -101,7 +101,8 @@ namespace Snap.APIs
                 app.UseSwaggerUI();
             //}
 
-            app.UseCors("AllowFrontend"); // Or "AllowAll"
+            app.UseCors("AllowAll");
+
 
             app.UseHttpsRedirection();
 
