@@ -70,6 +70,7 @@ namespace Snap.APIs.Controllers
             if (!result.Succeeded) { return Unauthorized(new ApiResponse(401)); }
             return Ok(
           new UserDto() {
+              UserId = User.Id,
               DispalyName = User.DispalyName,
               Email = User.Email,
               Token = await _tokenService.CreateTokenAsync(User, _userManager)
