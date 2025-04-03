@@ -24,11 +24,13 @@ namespace Snap.APIs.Controllers
         public async Task<ActionResult<IEnumerable<BlogDto>>> GetAllBlogs()
         {
             var blogs = await _context.Blogs
+                 .Include(b => b.User)
                 .Select(b => new BlogDto
                 {
                     Id = b.Id,
                     Blog = b.Blog,
-                    UserId = b.UserId
+                    UserId = b.UserId,
+                    UserDisplayName = b.User.DispalyName
                 })
                 .ToListAsync();
 

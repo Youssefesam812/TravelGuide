@@ -11,5 +11,7 @@
         public int Id { get; set; }
         public string Blog { get; set; }
         public string UserId { get; set; }
+
+        public string UserDisplayName { get; set; }
     }
 }
