@@ -12,8 +12,8 @@ using Snap.Repository.Data;
 namespace Snap.Repository.Migrations
 {
     [DbContext(typeof(SnapDbContext))]
-    [Migration("20250326023825_initial2")]
-    partial class initial2
+    [Migration("20250416121835_preferenceMigration")]
+    partial class preferenceMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -209,6 +209,34 @@ namespace Snap.Repository.Migrations
                     b.ToTable("Blogs");
                 });
 
+            modelBuilder.Entity("Snap.Core.Entities.Preferences", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Children")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MaritalStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreferredPlaces")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TravelTags")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Preferences");
+                });
+
             modelBuilder.Entity("Snap.Core.Entities.User", b =>
                 {
                     b.Property<string>("Id")
@@ -358,6 +386,17 @@ namespace Snap.Repository.Migrations
                 });
 
             modelBuilder.Entity("Snap.Core.Entities.Blogs", b =>
+                {
+                    b.HasOne("Snap.Core.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Snap.Core.Entities.Preferences", b =>
                 {
                     b.HasOne("Snap.Core.Entities.User", "User")
                         .WithMany()

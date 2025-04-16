@@ -20,9 +20,9 @@ namespace Snap.Repository.Seeders
 
                 var user1 = new User()
                 {
-                    DispalyName = "Marslino Ashraf",
-                    UserName = "marslinoashraf45",
-                    Email = "marslinoashraf45@gmail.com",
+                    DispalyName = "youssef_essam ",
+                    UserName = "youssefessam",
+                    Email = "youssefessam@gmail.com",
                     PhoneNumber = "1234567890"
                 };
                 var result = await userManager.CreateAsync(user1, "Test1!");

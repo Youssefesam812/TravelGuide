@@ -14,7 +14,7 @@ namespace Snap.Core.Entities
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(255)]
+        [MaxLength(8000)]
         public string Blog { get; set; }
 
         [Required]

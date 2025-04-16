@@ -24,6 +24,15 @@ namespace Snap.Repository.Data
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<TripDay>()
+                .HasOne(d => d.TripPlan)
+                .WithMany(p => p.TripDays)
+                .HasForeignKey(d => d.TripPlanId);
+
+            modelBuilder.Entity<TripActivity>()
+                .HasOne(a => a.TripDay)
+                .WithMany(d => d.Activities)
+                .HasForeignKey(a => a.TripDayId);
         }
 
 
@@ -33,6 +42,11 @@ namespace Snap.Repository.Data
         public DbSet<TopPlace> TopPlaces { get; set; }
         public DbSet<Blogs> Blogs { get; set; }
 
+        public DbSet<Preferences> Preferences { get; set; }
+
+        public DbSet<TripPlan> TripPlans { get; set; }
+        public DbSet<TripDay> TripDays { get; set; }
+        public DbSet<TripActivity> TripActivities { get; set; }
 
 
 

@@ -34,6 +34,19 @@ namespace Snap.APIs.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto model)
         {
+            var existingUserByEmail = await _userManager.FindByEmailAsync(model.Email);
+            if (existingUserByEmail != null)
+            {
+                return BadRequest(new ApiResponse(400, "An account is already registered with this email."));
+            }
+
+            var existingUserByDisplayName = _userManager.Users
+        .FirstOrDefault(u => u.DispalyName.ToLower() == model.DispalyName.ToLower());
+            if (existingUserByDisplayName != null)
+            {
+                return BadRequest(new ApiResponse(400, "Display name is already taken. Please choose another one."));
+            }
+
 
             var user = new User()
             {

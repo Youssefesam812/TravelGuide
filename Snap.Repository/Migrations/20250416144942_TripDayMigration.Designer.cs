@@ -12,8 +12,8 @@ using Snap.Repository.Data;
 namespace Snap.Repository.Migrations
 {
     [DbContext(typeof(SnapDbContext))]
-    [Migration("20250326023124_initial")]
-    partial class initial
+    [Migration("20250416144942_TripDayMigration")]
+    partial class TripDayMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -209,6 +209,136 @@ namespace Snap.Repository.Migrations
                     b.ToTable("Blogs");
                 });
 
+            modelBuilder.Entity("Snap.Core.Entities.Preferences", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Children")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MaritalStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreferredPlaces")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TravelTags")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Preferences");
+                });
+
+            modelBuilder.Entity("Snap.Core.Entities.TripActivity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Activity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PriceRange")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Time")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TripDayId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TripDayId");
+
+                    b.ToTable("TripActivities");
+                });
+
+            modelBuilder.Entity("Snap.Core.Entities.TripDay", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApproximateCost")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Day")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TripPlanId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TripPlanId");
+
+                    b.ToTable("TripDays");
+                });
+
+            modelBuilder.Entity("Snap.Core.Entities.TripPlan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Budget")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumDays")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("VisitorType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TripPlans");
+                });
+
             modelBuilder.Entity("Snap.Core.Entities.User", b =>
                 {
                     b.Property<string>("Id")
@@ -368,6 +498,50 @@ namespace Snap.Repository.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Snap.Core.Entities.Preferences", b =>
+                {
+                    b.HasOne("Snap.Core.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Snap.Core.Entities.TripActivity", b =>
+                {
+                    b.HasOne("Snap.Core.Entities.TripDay", "TripDay")
+                        .WithMany("Activities")
+                        .HasForeignKey("TripDayId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TripDay");
+                });
+
+            modelBuilder.Entity("Snap.Core.Entities.TripDay", b =>
+                {
+                    b.HasOne("Snap.Core.Entities.TripPlan", "TripPlan")
+                        .WithMany("TripDays")
+                        .HasForeignKey("TripPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TripPlan");
+                });
+
+            modelBuilder.Entity("Snap.Core.Entities.TripPlan", b =>
+                {
+                    b.HasOne("Snap.Core.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("TopPlace", b =>
                 {
                     b.HasOne("Governorate", "Governorate")
@@ -382,6 +556,16 @@ namespace Snap.Repository.Migrations
             modelBuilder.Entity("Governorate", b =>
                 {
                     b.Navigation("TopPlaces");
+                });
+
+            modelBuilder.Entity("Snap.Core.Entities.TripDay", b =>
+                {
+                    b.Navigation("Activities");
+                });
+
+            modelBuilder.Entity("Snap.Core.Entities.TripPlan", b =>
+                {
+                    b.Navigation("TripDays");
                 });
 #pragma warning restore 612, 618
         }
