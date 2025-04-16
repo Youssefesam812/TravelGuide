@@ -23,11 +23,7 @@ namespace Snap.APIs.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTripPlan([FromBody] TripPlanDto tripPlanDto)
         {
-            // Read UserId from header
-            if (!Request.Headers.TryGetValue("X-User-Id", out var userId))
-            {
-                return BadRequest("UserId header is missing.");
-            }
+           
                 
             var tripPlan = new TripPlan
             {
@@ -36,7 +32,7 @@ namespace Snap.APIs.Controllers
                 VisitorType = tripPlanDto.VisitorType,
                 NumDays = tripPlanDto.NumDays,
                 Budget = tripPlanDto.Budget,
-                UserId = userId!
+                UserId = tripPlanDto.UserId,
             };
 
             _context.TripPlans.Add(tripPlan);
