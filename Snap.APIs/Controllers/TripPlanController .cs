@@ -50,6 +50,24 @@ namespace Snap.APIs.Controllers
             return Ok(resultDto);
         }
 
+        // GET: api/TripPlan - Get all trip plans
+        [HttpGet]
+        public async Task<ActionResult<List<TripPlanDto>>> GetAllTripPlans()
+        {
+            var tripPlans = await _context.TripPlans
+                .Select(t => new TripPlanDto
+                {
+                    City = t.City,
+                    Image = t.Image,
+                    VisitorType = t.VisitorType,
+                    NumDays = t.NumDays,
+                    Budget = t.Budget,
+                    UserId = t.UserId
+                })
+                .ToListAsync();
+
+            return Ok(tripPlans);
+        }
 
         // GET: api/TripPlan/user/{userId}
         [HttpGet("user/{userId}")]
