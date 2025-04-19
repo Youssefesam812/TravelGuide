@@ -96,5 +96,21 @@ namespace Snap.APIs.Controllers
 
             return CreatedAtAction(nameof(GetBlogById), new { id = blog.Id }, responseDto);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBlog(int id)
+        {
+            var blog = await _context.Blogs.FindAsync(id);
+
+            if (blog == null)
+            {
+                return NotFound(new { Message = "Blog not found." });
+            }
+
+            _context.Blogs.Remove(blog);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Blog deleted successfully." });
+        }
     }
 }

@@ -126,6 +126,29 @@ namespace Snap.APIs.Controllers
 
             return Ok(userDtos);
         }
+
+        // Delete user by ID
+        [HttpDelete("Delete/{userId}")]
+        public async Task<ActionResult> DeleteUser(string userId)
+        {
+            // Find the user by ID
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound(new ApiResponse(404, "User not found."));
+            }
+
+            // Delete the user
+            var result = await _userManager.DeleteAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(new ApiResponse(400, "Failed to delete user."));
+            }
+
+            return Ok(new { message = "User deleted successfully." });
+        }
     }
 
 }
