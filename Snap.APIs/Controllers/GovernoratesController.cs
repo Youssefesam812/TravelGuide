@@ -202,7 +202,25 @@ namespace Snap.APIs.Controllers
         {
             return _context.Governorates.Any(e => e.Id == id);
         }
+
+        [HttpGet("ByName/{name}")]
+        public async Task<ActionResult<string>> GetGovernorateImageUrlByName(string name)
+        {
+            var imageUrl = await _context.Governorates
+                .Where(g => g.Name.ToLower() == name.ToLower())
+                .Select(g => g.ImageUrl)
+                .FirstOrDefaultAsync();
+
+            if (imageUrl == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(imageUrl);
+        }
     }
+
+
 
 }
 
